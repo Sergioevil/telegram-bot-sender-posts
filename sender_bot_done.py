@@ -26,7 +26,7 @@ class TelegramPost:
     def post_channel_private(self):
         data = sql_read('private')
         if data:
-            n, name, description, tg_id, tag, checked, to_1, to_2, link, message_id = data
+            n, name, description, tg_id, tag, checked, to_1, to_2, link, message_id, message_id_pro = data
             
             if link and tg_id:
                 msg = f"🔥 <b>{name}</b>"+'\n\n'+description+f'\n\n<a href="{link}">Ссылка</a>'+f'\n\n<a href=\"tg://user?id={tg_id}\">Связаться с заказчиком</a>'
@@ -61,7 +61,7 @@ class TelegramPost:
         data = sql_read('general')
         if data:
             # Отправляем в общий
-            n, name, description, tg_id, tag, checked, to_1, to_2, link, message_id = data
+            n, name, description, tg_id, tag, checked, to_1, to_2, link, message_id, message_id_pro = data
             msg = f"🔥 <b>{name}</b>"+'\n\n'+description+f'\n\n<a href="t.me/freelancex_account_bot/?start={n}">Связаться с заказчиком</a>'
             url = f"https://api.telegram.org/bot{self.TOKEN}/sendMessage?chat_id={self.GENERAL_IDs.get(tag)}&text={msg}&parse_mode=HTML"
             message_id_in_usual_data = requests.get(url)
@@ -78,7 +78,7 @@ class TelegramPost:
     def post_channel_all(self):
         data = sql_read('all')
         if data:
-            n, name, description, tg_id, tag, checked, to_1, to_2, link, message_id = data
+            n, name, description, tg_id, tag, checked, to_1, to_2, link, message_id, message_id_pro = data
             if link and tg_id:
                 # Отправляем в приват
                 msg = f"🔥 №<code>{n}</code> - <b>{name}</b>"+'\n\n'+description+f'\n\n<a href="{link}">Ссылка</a>'+f'\n\n<a href=\"tg://user?id={tg_id}\">Связаться с заказчиком</a>'
@@ -135,7 +135,7 @@ class TelegramPost:
         data = sql_read_to_delete_pool()
         if data:
             for i in data:
-                n, name, description, id, tag, checked, to_1, to_2, link, message_id = i
+                n, name, description, tg_id, tag, checked, to_1, to_2, link, message_id, message_id_pro = i
                 if message_id:
                     url = f"https://api.telegram.org/bot{self.TOKEN}/deleteMessage?chat_id={self.PRIVATE_IDs.get(tag)}&message_id={message_id}"
                     requests.get(url)
